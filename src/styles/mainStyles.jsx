@@ -1,0 +1,66 @@
+import { StyleSheet } from "react-native";
+
+export const mainStyles = StyleSheet.create ({
+    body: {
+        flex: 1,
+        backgroundColor: '#1e1e21',
+    },
+    // Window
+    window: {
+        flex: 1,
+        padding: 10,
+        justifyContent: "center",
+        alignItems: "flex-end"
+    },
+    firstNumber: {
+        color: "#09851a",
+        fontSize: 25,
+        fontFamily: 'cursive',
+        fontWeight: "bold"
+    },
+    secondNumber: {
+        color: "#1ce636",
+        fontSize: 45,
+        fontFamily: 'cursive',
+        fontWeight: "bold"
+    },
+
+    // Keyborad
+    keyboard: {
+        flexDirection: "row",
+        flexWrap: "wrap",
+        alignContent: "flex-end",
+        justifyContent: "space-between",
+
+    },
+    buttonNumber: {
+        backgroundColor: '#343540',        
+    },
+    buttonOperator: {
+        backgroundColor: '#1125d6',
+    },
+    buttonClear: {
+        backgroundColor: '#565761',
+    },
+    buttonSmall: {
+        width: 97,
+        height: 100,
+        justifyContent: "center",
+        alignItems: "center",
+        borderRadius: 15,
+        marginBottom: 1
+    },
+    buttonHuge: {
+        width: 195,
+        height: 100,
+        borderRadius: 15,
+        justifyContent: "center",
+        alignItems: "center",
+    },
+    buttonText: {
+        color: "white",
+        fontSize: 30,
+        fontFamily: 'cursive',
+        fontWeight: "bold"
+    }
+});
