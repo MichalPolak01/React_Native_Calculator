@@ -8,11 +8,11 @@ const Calculator = () => {
     const[operator, setOperator] = useState('');
 
     const createNumber = (number= '0') => {
-        setSecondNumber(secondNumber == '0'? number  : secondNumber + number);
+        setSecondNumber(secondNumber == '0' || secondNumber == 'Infinity'? number  : secondNumber + number);
     }
     
     const createOperator = (Operator) => {
-        if (operator === '' && secondNumber != '') {
+        if (operator === '' && secondNumber != '' && secondNumber != '0') {
             setOperator(Operator);
             setFirstNumber(secondNumber);
             setSecondNumber('0');
