@@ -39,8 +39,14 @@ export const mainStyles = StyleSheet.create ({
     buttonOperator: {
         backgroundColor: '#1125d6',
     },
-    buttonClear: {
+    buttonSpecial: {
         backgroundColor: '#565761',
+    },
+    buttonEqual: {
+        backgroundColor: '#08bf26',
+    },
+    buttonClear: {
+        backgroundColor: '#d64304',
     },
     buttonSmall: {
         width: 97,
@@ -62,5 +68,13 @@ export const mainStyles = StyleSheet.create ({
         fontSize: 30,
         fontFamily: 'cursive',
         fontWeight: "bold"
+    },
+    buttonHorizontal: {
+        width: 130,
+        height: 50
+    },
+    buttonHorizontalHuge: {
+        width: 260,
+        height: 50
     }
 });
