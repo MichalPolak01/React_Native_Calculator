@@ -1,12 +1,17 @@
 import React, { useEffect, useState } from "react";
 import Calculator from "./src/components/Kalkulator";
-import { Dimensions } from "react-native";
+import { Dimensions, Platform } from "react-native";
+import SplashScreen from "react-native-splash-screen";
 
 const App: () => React$Native = () => {
   const [windowWidth, setWindowWidth] = useState(Dimensions.get('window').width);
   const [windowHeight, setWindowHeight] = useState(Dimensions.get('window').height);
 
   useEffect(() => {
+    if (Platform.OS === 'android') {
+      SplashScreen.hide();
+    }
+
     const updateDimensions = () => {
       setWindowWidth(Dimensions.get('window').width);
       setWindowHeight(Dimensions.get('window').height);
