@@ -6,122 +6,94 @@ import { mainStyles as styles } from "../styles/mainStyles";
 import Button from "./Button";
 
 const Calculator = (props) => {
-    const[firstNumber, setFirstNumber] = useState('');
-    const[secondNumber, setSecondNumber] = useState('0');
-    const[operator, setOperator] = useState('');
+    const[expression, setExpression] = useState('0');
+    const[lastNumber, setLastNumber] = useState('');
 
-    const createNumber = (number) => {
-        if (number === '.' && secondNumber.includes('.') || number === '.' && secondNumber === '0' || number === '.' && secondNumber === '-' ) {
+    const createExpression = (input) => {
+        const lastChar = expression.slice(-1);
+        const mathOperators = ['+', '-', '*', '/'];
+
+        if (input === '.' && lastNumber.includes('.')) {
             return;
         }
 
-        setSecondNumber(secondNumber == '0' || secondNumber == 'Infinity'? number  : secondNumber + number);
-    }
-    
-    const createOperator = (Operator) => {
-        if (Operator === '-' && secondNumber === '0') {
-            setSecondNumber('-');
+        if (mathOperators.includes(lastChar)&& mathOperators.includes(input)) {
+            setExpression(expression => expression.slice(0, -1) + input);
+            return;
         }
-
-        if (operator === '' && secondNumber != '' && secondNumber != '0' && secondNumber != '-') {
-            setOperator(Operator);
-            setFirstNumber(secondNumber);
-            setSecondNumber('0');
-        }
+        
+        setExpression((expression === '0' || expression === 'Infinity') ? input : expression + input);
+        setLastNumber((mathOperators.includes(input)) ? '' : lastNumber + input);
     }
 
     const calculate = () => {
-        let result = 0;
-        if (operator != '' && firstNumber != '' && secondNumber != '') {
-            switch (operator) {
-                case '/':
-                    result = _.divide(parseFloat(firstNumber), parseFloat(secondNumber));
-                    clear();
-                    setSecondNumber(String(result));
-                    break;
-                case 'x':
-                    result = _.multiply(parseFloat(firstNumber), parseFloat(secondNumber));
-                    clear();
-                    setSecondNumber(String(result));
-                    break;
-                case '-':
-                    result = _.subtract(parseFloat(firstNumber), parseFloat(secondNumber));
-                    clear();
-                    setSecondNumber(String(result));
-                    break;
-                case '+':
-                    result = _.add( parseFloat(firstNumber), parseFloat(secondNumber) );
-                    clear();
-                    setSecondNumber(String(result));
-                    break;
-            }
-        }
+        let result = eval(expression);
+        setExpression(String(result));
     }
 
     const calculateExtends = (operation) => {
         switch (operation) {
             case '+/-':
-                setSecondNumber(String(parseFloat(secondNumber) * (-1)));
+                setExpression(String(eval(expression) * (-1)));
                 break;
             case '%':
-                setSecondNumber(String(parseFloat(secondNumber) * (0.01)));
+                setExpression(String(eval(expression) * (0.01)));
                 break;
             case 'x^2':
-                setSecondNumber(String(Math.pow(parseFloat(secondNumber), 2)));
+                setExpression(String(Math.pow(eval(expression), 2)));
                 break;
             case 'x^3':
-                setSecondNumber(String(Math.pow(parseFloat(secondNumber), 3)));
+                setExpression(String(Math.pow(eval(expression), 3)));
                 break;
             case 'sqrt2':
-                setSecondNumber(String(Math.sqrt(parseFloat(secondNumber))));
+                setExpression(String(Math.sqrt(eval(expression))));
                 break;
             case 'sqrt3':
-                setSecondNumber(String(Math.pow(parseFloat(secondNumber), 1/3)));
+                setExpression(String(Math.pow(eval(expression), 1/3)));
                 break;
             case 'ln':
-                setSecondNumber(String(Math.log(parseFloat(secondNumber))));
+                setExpression(String(Math.log(eval(expression))));
                 break;
             case 'log10':
-                setSecondNumber(String(Math.log10(parseFloat(secondNumber))));
+                setExpression(String(Math.log10(eval(expression))));
                 break;
             case 'factorial':
                 let result = 1;
-                if (secondNumber != '0' && secondNumber != '1' ){
-                    for (let i = 2; i <= parseFloat(secondNumber); i++) {
+                if (expression != '0' && expression != '1' ){
+                    for (let i = 2; i <= eval(expression); i++) {
                         result *=i;
                     }
                 }
-                setSecondNumber(String(result));
+                setExpression(String(result));
                 break;
             case 'sin':
-                setSecondNumber(String(Math.sin(parseFloat(secondNumber))));
+                setExpression(String(Math.sin(eval(expression))));
                 break;
             case 'cos':
-                setSecondNumber(String(Math.cos(parseFloat(secondNumber))));
+                setExpression(String(Math.cos(eval(expression))));
                 break;
             case 'tan':
-                setSecondNumber(String(Math.tan(parseFloat(secondNumber))));
+                setExpression(String(Math.tan(eval(expression))));
                 break;
         }
     }
 
     const clear = () => {
-        setFirstNumber('');
-        setSecondNumber('0');
-        setOperator('');
+        setExpression('0');
+        setLastNumber('');
     }
 
     const visibleSpecial = props.horizontal ?? false;
 
     const buttons = [
         {
-            name: <MathView math={'x^{2}'} style={styles.buttonText }/>,
+            name: <MathView math={'(x)^{2}'} style={styles.buttonText }/>,
             action: () => calculateExtends('x^2'),
             styles: [styles.buttonSmall, styles.buttonSpecial, (visibleSpecial) ? styles.buttonHorizontal : []],
             visible: visibleSpecial
         },
         {
-            name: <MathView math={'x^{3}'} style={styles.buttonText }/>,
+            name: <MathView math={'(x)^{3}'} style={styles.buttonText }/>,
             action: () => calculateExtends('x^3'),
             styles: [styles.buttonSmall, styles.buttonSpecial, (visibleSpecial) ? styles.buttonHorizontal : []],
             visible: visibleSpecial
@@ -146,139 +118,139 @@ const Calculator = (props) => {
         },
         {
             name: '/',
-            action: () => createOperator('/'),
+            action: () => createExpression('/'),
             styles: [styles.buttonSmall, styles.buttonOperator, (visibleSpecial) ? styles.buttonHorizontal : []],
             visible: true
         },
         {
-            name: <MathView math={'\\sqrt[2]{x}'} style={styles.buttonText }/>,
+            name: <MathView math={'\\sqrt[2]{(x)}'} style={styles.buttonText }/>,
             action: () => calculateExtends('sqrt2'),
             styles: [styles.buttonSmall, styles.buttonSpecial, (visibleSpecial) ? styles.buttonHorizontal : []],
             visible: visibleSpecial
         },
         {
-            name: <MathView math={'\\sqrt[3]{x}'} style={styles.buttonText }/>,
+            name: <MathView math={'\\sqrt[3]{(x)}'} style={styles.buttonText }/>,
             action: () => calculateExtends('sqrt3'),
             styles: [styles.buttonSmall, styles.buttonSpecial, (visibleSpecial) ? styles.buttonHorizontal : []],
             visible: visibleSpecial
         },
         {
             name: '7',
-            action: () => createNumber('7'),
+            action: () => createExpression('7'),
             styles: [styles.buttonSmall, styles.buttonNumber, (visibleSpecial) ? styles.buttonHorizontal : []],
             visible: true
         },
         {
             name: '8',
-            action: () => createNumber('8'),
+            action: () => createExpression('8'),
             styles: [styles.buttonSmall, styles.buttonNumber, (visibleSpecial) ? styles.buttonHorizontal : []],
             visible: true
         },
         {
             name: '9',
-            action: () => createNumber('9'),
+            action: () => createExpression('9'),
             styles: [styles.buttonSmall, styles.buttonNumber, (visibleSpecial) ? styles.buttonHorizontal : []],
             visible: true
         },
         {
             name: 'x',
-            action: () => createOperator('x'),
+            action: () => createExpression('*'),
             styles: [styles.buttonSmall, styles.buttonOperator, (visibleSpecial) ? styles.buttonHorizontal : []],
             visible: true
         },
         {
-            name: <MathView math={'\\ln{x}'} style={styles.buttonText }/>,
+            name: <MathView math={'\\ln{(x)}'} style={styles.buttonText }/>,
             action: () => calculateExtends('ln'),
             styles: [styles.buttonSmall, styles.buttonSpecial, (visibleSpecial) ? styles.buttonHorizontal : []],
             visible: visibleSpecial
         },
         {
-            name: <MathView math={'\\log_{10}{x}'} style={styles.buttonText }/>,
+            name: <MathView math={'\\log_{10}{(x)}'} style={styles.buttonText }/>,
             action: () => calculateExtends('log10'),
             styles: [styles.buttonSmall, styles.buttonSpecial, (visibleSpecial) ? styles.buttonHorizontal : []],
             visible: visibleSpecial
         },
         {
             name: '4',
-            action: () => createNumber('4'),
+            action: () => createExpression('4'),
             styles: [styles.buttonSmall, styles.buttonNumber, (visibleSpecial) ? styles.buttonHorizontal : []],
             visible: true
         },
         {
             name: '5',
-            action: () => createNumber('5'),
+            action: () => createExpression('5'),
             styles: [styles.buttonSmall, styles.buttonNumber, (visibleSpecial) ? styles.buttonHorizontal : []],
             visible: true
         },
         {
             name: '6',
-            action: () => createNumber('6'),
+            action: () => createExpression('6'),
             styles: [styles.buttonSmall, styles.buttonNumber, (visibleSpecial) ? styles.buttonHorizontal : []],
             visible: true
         },
         {
             name: '-',
-            action: () => createOperator('-'),
+            action: () => createExpression('-'),
             styles: [styles.buttonSmall, styles.buttonOperator, (visibleSpecial) ? styles.buttonHorizontal : []],
             visible: true
         },
         {
-            name: 'x!',
+            name: '(x)!',
             action: () => calculateExtends('factorial'),
             styles: [styles.buttonSmall, styles.buttonSpecial, (visibleSpecial) ? styles.buttonHorizontal : []],
             visible: visibleSpecial
         },
         {
-            name: 'sin',
+            name: 'sin(x)',
             action: () => calculateExtends('sin'),
             styles: [styles.buttonSmall, styles.buttonSpecial, (visibleSpecial) ? styles.buttonHorizontal : []],
             visible: visibleSpecial
         },
         {
             name: '1',
-            action: () => createNumber('1'),
+            action: () => createExpression('1'),
             styles: [styles.buttonSmall, styles.buttonNumber, (visibleSpecial) ? styles.buttonHorizontal : []],
             visible: true
         },
         {
             name: '2',
-            action: () => createNumber('2'),
+            action: () => createExpression('2'),
             styles: [styles.buttonSmall, styles.buttonNumber, (visibleSpecial) ? styles.buttonHorizontal : []],
             visible: true
         },
         {
             name: '3',
-            action: () => createNumber('3'),
+            action: () => createExpression('3'),
             styles: [styles.buttonSmall, styles.buttonNumber, (visibleSpecial) ? styles.buttonHorizontal : []],
             visible: true
         },
         {
             name: '+',
-            action: () => createOperator('+'),
+            action: () => createExpression('+'),
             styles: [styles.buttonSmall, styles.buttonOperator, (visibleSpecial) ? styles.buttonHorizontal : []],
             visible: true
         },
         {
-            name: 'cos',
+            name: 'cos(x)',
             action: () => calculateExtends('cos'),
             styles: [styles.buttonSmall, styles.buttonSpecial, (visibleSpecial) ? styles.buttonHorizontal : []],
             visible: visibleSpecial
         },
         {
-            name: 'tan',
+            name: 'tan(x)',
             action: () => calculateExtends('tan'),
             styles: [styles.buttonSmall, styles.buttonSpecial, (visibleSpecial) ? styles.buttonHorizontal : []],
             visible: visibleSpecial
         },
         {
             name: '0',
-            action: () => createNumber('0'),
+            action: () => createExpression('0'),
             styles: [styles.buttonHuge, styles.buttonNumber, (visibleSpecial) ? styles.buttonHorizontalHuge : []],
             visible: true
         },
         {
             name: ',',
-            action: () => createNumber('.'),
+            action: () => createExpression('.'),
             styles: [styles.buttonSmall, styles.buttonNumber, (visibleSpecial) ? styles.buttonHorizontal : []],
             visible: true
         },
@@ -303,10 +275,10 @@ const Calculator = (props) => {
         <View style={styles.body}>
             <View style={styles.window}>
                 <Text style={styles.firstNumber}>
-                    {firstNumber} {operator}
+                    {/* {firstNumber} {operator} */}
                 </Text>
                 <Text style={styles.secondNumber}>
-                    {secondNumber} 
+                    {expression} 
                 </Text>
             </View>
             <View style={styles.keyboard}>

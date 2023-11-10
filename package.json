@@ -11,11 +11,11 @@
   },
   "dependencies": {
     "lodash": "latest",
-    "mathjax": "^3.2.2",
     "react": "18.2.0",
     "react-native": "0.72.6",
     "react-native-math-view": "^3.9.5",
-    "react-native-splash-screen": "^3.3.0"
+    "react-native-splash-screen": "^3.3.0",
+    "yarn": "^1.22.19"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
