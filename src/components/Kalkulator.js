@@ -21,14 +21,20 @@ const Calculator = (props) => {
             setExpression(expression => expression.slice(0, -1) + input);
             return;
         }
+
+        if (expression === 'Infinity' && input === '.'|| expression === '-Infinity' && input === '.') {
+            setExpression('0.');
+        } else {
+            setExpression((expression === '0' && input != '.' || expression === 'Infinity' || expression === '-Infinity') ? input : expression + input);
+        }
         
-        setExpression((expression === '0' || expression === 'Infinity') ? input : expression + input);
         setLastNumber((mathOperators.includes(input)) ? '' : lastNumber + input);
     }
 
     const calculate = () => {
         let result = eval(expression);
         setExpression(String(result));
+        setLastNumber(String(result));
     }
 
     const calculateExtends = (operation) => {
@@ -274,9 +280,6 @@ const Calculator = (props) => {
     return (
         <View style={styles.body}>
             <View style={styles.window}>
-                <Text style={styles.firstNumber}>
-                    {/* {firstNumber} {operator} */}
-                </Text>
                 <Text style={styles.secondNumber}>
                     {expression} 
                 </Text>

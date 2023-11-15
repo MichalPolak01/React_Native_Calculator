@@ -49,7 +49,8 @@ export const mainStyles = StyleSheet.create ({
         backgroundColor: '#d64304',
     },
     buttonSmall: {
-        width: 97,
+        width: '24.8%',
+        // flex: 1,
         height: 100,
         justifyContent: "center",
         alignItems: "center",
@@ -57,7 +58,8 @@ export const mainStyles = StyleSheet.create ({
         marginBottom: 1
     },
     buttonHuge: {
-        width: 195,
+        // width: 195,
+        width: '49.8%',
         height: 100,
         borderRadius: 15,
         justifyContent: "center",
@@ -70,11 +72,11 @@ export const mainStyles = StyleSheet.create ({
         fontWeight: "bold"
     },
     buttonHorizontal: {
-        width: 130,
+        width: '16.5%',
         height: 50
     },
     buttonHorizontalHuge: {
-        width: 260,
+        width: '33%',
         height: 50
     }
 });
