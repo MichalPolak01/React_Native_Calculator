@@ -50,7 +50,6 @@ export const mainStyles = StyleSheet.create ({
     },
     buttonSmall: {
         width: '24.8%',
-        // flex: 1,
         height: 100,
         justifyContent: "center",
         alignItems: "center",
@@ -58,7 +57,6 @@ export const mainStyles = StyleSheet.create ({
         marginBottom: 1
     },
     buttonHuge: {
-        // width: 195,
         width: '49.8%',
         height: 100,
         borderRadius: 15,
